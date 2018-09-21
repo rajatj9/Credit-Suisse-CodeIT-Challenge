@@ -23,3 +23,6 @@ if __name__ == "__main__":
     logger.info("Starting application ...")
     app.run()
 
+@app.route('/hello', methods=['GET'])
+def say_hello():
+	return "HELLO, how are you?";
