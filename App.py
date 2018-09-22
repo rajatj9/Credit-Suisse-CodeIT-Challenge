@@ -272,7 +272,9 @@ def mind():
 def camps():
     data = request.get_json();
     print(data)
-    return jsonify(data)
+    answer = len(data)
+    final_answer = {"answer" : answer}
+    return jsonify(final_answer)
 
 @app.route('/two-dinosaurs', methods=['POST'])
 def CalResult():
