@@ -21,20 +21,7 @@ def get_primes(n):
         numbers.difference_update(set(range(p*2, n+1, p)))
     return primes
 
-def is_prime(a):
-    x = True 
-    for i in (2, a):
-            while x:
-               if a%i == 0:
-                   x = False
-               else:
-                   x = True
 
-
-    if x:
-        print True
-    else:
-        print False
 
 
 @app.route('/', methods=['GET'])
@@ -75,9 +62,6 @@ def prime_sum():
     prime_list = get_primes(N)
     answer=[]
     #Loop to all the possible number of prime numbers
-    if is_prime(N):
-        return '[{}]'.format(N)
-        return "[0]"
     for L in range(0, len(prime_list)+1):
         for subset in itertools.combinations(prime_list, L):
             if (sum(subset)==N):
