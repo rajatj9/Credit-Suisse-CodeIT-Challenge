@@ -41,22 +41,6 @@ def MinDiff(arr):
 def default_route():
     return "Team typhoont10 page";
 
-if __name__ == "__main__":
-    logFormatter = logging.Formatter("%(asctime)s [%(filename)s] [%(funcName)s] [%(lineno)d] [%(levelname)-5.5s]  %(message)s")
-    rootLogger = logging.getLogger()
-
-    rootLogger.setLevel(logging.INFO)
-
-    fileHandler = logging.FileHandler("team.log")
-    fileHandler.setFormatter(logFormatter)
-    rootLogger.addHandler(fileHandler)
-
-    consoleHandler = logging.StreamHandler()
-    consoleHandler.setFormatter(logFormatter)
-    rootLogger.addHandler(consoleHandler)
-
-    logger.info("Starting application ...")
-    app.run()
 
 @app.route('/hello', methods=['GET'])
 def say_hello():
@@ -264,4 +248,26 @@ def mind():
     min_distance = MinDiff(Data)
     answer = {"answer" : min_distance}
     return jsonify(answer)
+
+
+@app.route('/two-dinosaurs', methods=['POST'])
+def CalResult():
+    data = request.get_json();
+    Q=data["maximum_difference_for_calories"]
+    A=data["calories_for_each_type_for_raphael"]
+    result=0
+    N=data["number_of_types_of_food"]
+    B=data["calories_for_each_type_for_leonardo"]
+    NumOutCome=2**(N*2)
+    food=np.array(A+B)
+    for k in range(NumOutCome):
+           kk=bin(k)[2:]
+           if len(kk)<(N*2):kk='0'*(N*2-len(kk))+kk
+           a=np.array((list(kk)),dtype=int)
+           temp=copy.copy(food)
+           temp[np.argwhere(a==0)]=0
+           if abs(sum(temp[0:N])-sum(temp[N:]))<=Q:result+=1
+    if result>2**15:result%=100000123
     
+    final_result ={"result" : result}
+    return jsonify(final_result)

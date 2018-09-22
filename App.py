@@ -267,4 +267,24 @@ def mind():
     min_distance = MinDiff(Data)
     answer = {"answer" : min_distance}
     return jsonify(answer)
-    
+
+@app.route('/two-dinosaurs', methods=['POST'])
+def CalResult():
+    data = request.get_json();
+    Q=data["maximum_difference_for_calories"]
+    A=data["calories_for_each_type_for_raphael"]
+    result=0
+    N=data["number_of_types_of_food"]
+    B=data["calories_for_each_type_for_leonardo"]
+    NumOutCome=2**(N*2)
+    food=np.array(A+B)
+    for k in range(NumOutCome):
+           kk=bin(k)[2:]
+           if len(kk)<(N*2):kk='0'*(N*2-len(kk))+kk
+           a=np.array((list(kk)),dtype=int)
+           temp=copy.copy(food)
+           temp[np.argwhere(a==0)]=0
+           if abs(sum(temp[0:N])-sum(temp[N:]))<=Q:result+=1
+    if result>2**15:result%=100000123
+    final_result ={"result" : result}
+    return jsonify(final_result)
