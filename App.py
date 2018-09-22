@@ -2,8 +2,8 @@ import logging
 from codeitsuisse import  app
 import itertools
 import urllib.request
-from Pillow import Image
-from Pillow.ExifTags import TAGS, GPSTAGS
+from PIL import Image
+from PIL.ExifTags import TAGS, GPSTAGS
 import json
 
 
