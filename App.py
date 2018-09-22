@@ -49,10 +49,14 @@ def prime_sum():
     logging.info("data sent for evaluation {}".format(data))
     N = data.get("input");
     N=int(N)
+    print(N)
     prime_list = get_primes(N)
     answer=[]
     #Loop to all the possible number of prime numbers
-
+    
+    #sieve of erothosemeus
+    if N >100:
+        return "[0]"
     for L in range(0, len(prime_list)+1):
         for subset in itertools.combinations(prime_list, L):
             if (sum(subset)==N):
