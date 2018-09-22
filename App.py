@@ -268,6 +268,12 @@ def mind():
     answer = {"answer" : min_distance}
     return jsonify(answer)
 
+@app.route('/customers-and-hotel/minimum-camps', methods=['POST'])
+def camps():
+    data = request.get_json();
+    print(data)
+    return jsonify(data)
+
 @app.route('/two-dinosaurs', methods=['POST'])
 def CalResult():
     data = request.get_json();
@@ -289,3 +295,5 @@ def CalResult():
     if result>2**15:result%=100000123
     final_result ={"result" : result}
     return jsonify(final_result)
+
+
