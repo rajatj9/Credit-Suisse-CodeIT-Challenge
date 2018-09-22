@@ -16,6 +16,21 @@ import numpy
 #model = load_model('models/mnistCNN.h5')
 from flask import request, jsonify;
 
+def MinDiff(arr):
+    n=len(arr)
+    # Initialize difference as infinite
+    diff = 10**20
+     
+    # Find the min diff by comparing difference
+    # of all possible pairs in given array
+    for i in range(n-1):
+        for j in range(i+1,n):
+            if abs(arr[i]-arr[j]) < diff:
+                diff = abs(arr[i] - arr[j])
+ 
+    # Return min diff
+    return diff
+
 
 @app.route('/', methods=['GET'])
 def default_route():
@@ -169,4 +184,12 @@ def sortFlights():
                 added=1
     print(answer_flights)
     return jsonify(answer_flights)
+
+@app.route('/customers-and-hotel/minimum-distance', methods=['POST'])
+def mindis():
+    Data = request.get_json();
+    min_distance = MinDiff(Data)
+    answer = {"answer" : min_distance}
+    return jsonify(answer)
+    
     
