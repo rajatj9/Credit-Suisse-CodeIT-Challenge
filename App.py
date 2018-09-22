@@ -103,4 +103,4 @@ def getGPS():
         long=_convert_to_degress(Long)
         out={'lat':lat,'long':long}
         answer.append(out)
-    return jsonify(answer)
+    return json.dump(answer)
