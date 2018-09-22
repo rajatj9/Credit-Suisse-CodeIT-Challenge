@@ -73,7 +73,7 @@ def getGPS():
     answer=[]
     data = request.get_json()
     data=json.loads(data)
-    logging.info("data sent for evaluation {}".format(data))
+    print(data)
     for path_dict in data:
         url=path_dict['path']
         urllib.request.urlretrieve(url,'abc.jpg') 
