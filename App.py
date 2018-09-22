@@ -137,8 +137,9 @@ def deepLearning():
     print("ANSER DICTIONARY  = ", ans_dict)
     return jsonify(ans_dict)
         
-@app.route('/machine-learning/question-1', methods=['POST'])
-def deepLearning():
+@app.route('/machine-learning/question-2', methods=['POST'])
+def deepLearning2():
+    model = load_model('models/mnistCNN.h5')
     answer=[]
     data = request.get_json()
     images = data['question']

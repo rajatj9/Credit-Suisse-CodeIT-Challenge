@@ -9,8 +9,11 @@ import copy
 import numpy as np
 from sklearn import datasets, linear_model
 from sklearn.metrics import mean_squared_error, r2_score
+from keras.models import load_model
+model = load_model('models/mnistCNN.h5')
+import numpy
 #Imports for Deep Learning trade here
-
+model = load_model('models/mnistCNN.h5')
 from flask import request, jsonify;
 
 
@@ -124,5 +127,27 @@ def getOut():
             total=temp
     Out={'transactions':Trans}
     return jsonify(Out)
+
+@app.route('/machine-learning/question-2', methods=['POST'])
+def deepLearning2():
+
+    answer=[]
+    data = request.get_json()
+    images = data['question']
+    print(images)
+    for image in images:
+        image = np.array(image)
+        image = image.reshape(28,28)
+        im2arr = image.reshape(1,28,28,1)
+        y_pred = model.predict(im2arr)
+        
+        y_pred=y_pred[0]
+        y_pred = y_pred.tolist()
+        result = y_pred.index(1.0)
+        answer.append(result)
+        print(y_pred)
+        answer=str(answer)
+    result = {"answer" : answer}
+    return jsonify(result)
 
     
