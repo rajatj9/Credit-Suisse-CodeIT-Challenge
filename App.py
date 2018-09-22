@@ -11,6 +11,9 @@ import copy
 import numpy as np
 from sklearn import datasets, linear_model
 from sklearn.metrics import mean_squared_error, r2_score
+from keras.models import load_model
+model = load_model('models/mnistCNN.h5')
+import numpy
 #Imports for Deep Learning trade here
 
 from flask import request, jsonify;
@@ -134,7 +137,28 @@ def deepLearning():
     print("ANSER DICTIONARY  = ", ans_dict)
     return jsonify(ans_dict)
         
+@app.route('/machine-learning/question-1', methods=['POST'])
+def deepLearning():
+    answer=[]
+    data = request.get_json()
+    images = data['question']
+    print(images)
+    for image in images:
+        image = np.array(image)
+        image = image.reshape(28,28)
+        im2arr = image.reshape(1,28,28,1)
+        y_pred = model.predict(im2arr)
         
+        y_pred=y_pred[0]
+        y_pred = y_pred.tolist()
+        result = y_pred.index(1.0)
+        answer.append(result)
+        print(y_pred)
+        answer=str(answer)
+    result = {"answer" : answer}
+    return jsonify(result)
+
+    
 @app.route('/tally-expense', methods=['POST'])
 def getOut():
     Data = request.get_json();
