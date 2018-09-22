@@ -168,11 +168,9 @@ def getOut():
     total=[]
     for d in range(n):
         total.append(nameDictTotal[DictName[d]])
-    temp=copy.copy(total)
     Trans=[]
     #temp=copy.copy(total)
     while total!=[0]*n:
-        #print(total)
         temp=copy.copy(total)
         step={'from':0,'to':0,'amount':0}
         tempMin=temp[total.index(min(total))]
@@ -182,21 +180,25 @@ def getOut():
         if(tempMax+tempMin)>0:
             tMax=tempMax+tempMin
             tMin=0
-            temp[total.index(min(total))]=tMin
-            temp[total.index(max(total))]=tMax
-            step['from']=DictName[total.index(max(total))]
-            step['to']=DictName[total.index(min(total))]
-            step['amount']=round(min(abs(tempMax),abs(tempMin)),2)
+            minIndex=total.index(min(total))
+            maxIndex=total.index(max(total))
+            temp[minIndex]=tMin
+            temp[maxIndex]=tMax
+            step['from']=DictName[maxIndex]
+            step['to']=DictName[minIndex]
+            step['amount']=round(min(tempMax,abs(tempMin)),2)
             Trans.append(step)
             total=temp
         elif (tempMax+tempMin)<0:
             tMin=tempMin+tempMax
             tMax=0
-            temp[total.index(min(total))]=tMin
-            temp[total.index(max(total))]=tMax
-            step['from']=DictName[total.index(max(total))]
-            step['to']=DictName[total.index(min(total))]
-            step['amount']=round(min(abs(tempMax),abs(tempMin)),2)
+            minIndex=total.index(min(total))
+            maxIndex=total.index(max(total))
+            temp[minIndex]=tMin
+            temp[maxIndex]=tMax
+            step['from']=DictName[maxIndex]
+            step['to']=DictName[minIndex]
+            step['amount']=round(min(tempMax,abs(tempMin)),2)
             Trans.append(step)
             total=temp
         elif (tempMax+tempMin)==0 and tempMax==0 and tempMin==0:
@@ -204,14 +206,16 @@ def getOut():
         elif (tempMax+tempMin)==0 and tempMax!=0:
             tMax=0
             tMin=0
-            temp[total.index(min(total))]=tMin
-            temp[total.index(max(total))]=tMax
-            step['from']=DictName[total.index(max(total))]
-            step['to']=DictName[total.index(min(total))]
-            step['amount']=round(min(abs(tempMax),abs(tempMin)),2)
+            minIndex=total.index(min(total))
+            maxIndex=total.index(max(total))
+            temp[minIndex]=tMin
+            temp[maxIndex]=tMax
+            step['from']=DictName[maxIndex]
+            step['to']=DictName[minIndex]
+            step['amount']=round(min(tempMax,abs(tempMin)),2)
             Trans.append(step)
             total=temp
-    Out={'transaction':Trans}
+    Out={'transactions':Trans}
     return json.dumps(Out)
 
     
