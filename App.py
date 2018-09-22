@@ -114,6 +114,7 @@ def getGPS():
 @app.route('/machine-learning/question-1', methods=['POST'])
 def deepLearning():
     data = request.get_json();
+    print(data)
     X=np.array(data['input'])
     Y=np.array(data['input'])
     # Create linear regression object
@@ -128,13 +129,16 @@ def deepLearning():
     for i in range(len(coeffecients)):
         answer += coeffecients[i]*question[i]
     answer = np.sum(answer)
+    print("ANSWER == ", answer)
     ans_dict= {"answer" : answer}
+    print("ANSER DICTIONARY  = ", ans_dict)
     return json.dumps(ans_dict)
         
         
 @app.route('/tally-expense', methods=['POST'])
 def getOut():
     Data = request.get_json();
+    print(Data)
     n=len(Data['persons'])
     Person=Data['persons']
     Expense=Data['expenses']
