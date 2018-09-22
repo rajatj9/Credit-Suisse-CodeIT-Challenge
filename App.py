@@ -12,7 +12,6 @@ import numpy as np
 from sklearn import datasets, linear_model
 from sklearn.metrics import mean_squared_error, r2_score
 from keras.models import load_model
-model = load_model('models/mnistCNN.h5')
 import numpy
 #Imports for Deep Learning trade here
 
@@ -155,7 +154,7 @@ def deepLearning2():
         result = y_pred.index(1.0)
         answer.append(result)
         print(y_pred)
-        answer=str(answer)
+    answer=str(answer)
     result = {"answer" : answer}
     return jsonify(result)
 
