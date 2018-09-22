@@ -23,14 +23,17 @@ logger = logging.getLogger(__name__)
 def MinDiff(arr):
     n=len(arr)
     # Initialize difference as infinite
+
+    arr = sorted(arr)
+ 
+    # Initialize difference as infinite
     diff = 10**20
-     
-    # Find the min diff by comparing difference
-    # of all possible pairs in given array
+ 
+    # Find the min diff by comparing adjacent
+    # pairs in sorted array
     for i in range(n-1):
-        for j in range(i+1,n):
-            if abs(arr[i]-arr[j]) < diff:
-                diff = abs(arr[i] - arr[j])
+        if arr[i+1] - arr[i] < diff:
+            diff = arr[i+1] - arr[i]
  
     # Return min diff
     return diff
