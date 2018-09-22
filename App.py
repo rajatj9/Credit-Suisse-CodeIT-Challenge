@@ -131,8 +131,6 @@ def deepLearning():
     ans_dict= {"answer" : answer}
     return json.dumps(ans_dict)
         
-@app.route('/machine-learning/question-2', methods=['POST'])
-def deepLearning2():
         
 @app.route('/tally-expense', methods=['POST'])
 def getOut():
