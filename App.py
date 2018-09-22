@@ -57,7 +57,7 @@ def prime_sum():
         for subset in itertools.combinations(prime_list, L):
             if (sum(subset)==N):
                 answer = subset
-    return answer
+    return list(answer)
                 
         
         
