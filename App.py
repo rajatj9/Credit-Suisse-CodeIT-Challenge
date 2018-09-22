@@ -285,15 +285,32 @@ def CalResult():
     result=0
     N=data["number_of_types_of_food"]
     B=data["calories_for_each_type_for_leonardo"]
-    NumOutCome=2**(N*2)
-    food=np.array(A+B)
+    NumOutCome=2**(N)
+    foodA=np.array(A)
+    foodB=np.array(B)
+    AAA=[]
+    BBB=[]
     for k in range(NumOutCome):
-           kk=bin(k)[2:]
-           if len(kk)<(N*2):kk='0'*(N*2-len(kk))+kk
-           a=np.array((list(kk)),dtype=int)
-           temp=copy.copy(food)
-           temp[np.argwhere(a==0)]=0
-           if abs(sum(temp[0:N])-sum(temp[N:]))<=Q:result+=1
+        kk=bin(k)[2:]
+        if len(kk)<(N):kk='0'*(N-len(kk))+kk
+        a=np.array((list(kk)),dtype=int)
+        Index=np.argwhere(a==0)
+        tempA=copy.copy(foodA)
+        tempA[Index]=0
+        AAA.append(sum(tempA))
+        tempB=copy.copy(foodB)
+        tempB[Index]=0
+        BBB.append(sum(tempB))
+    AAA.sort()
+    BBB.sort()
+    ac=np.array(AAA)
+    bc=np.array(BBB)
+    for i in range(len(ac)):
+        Max=ac[i]+Q
+        Min=ac[i]-Q
+        Index1=np.argwhere(bc<=Max)
+        Index2=np.argwhere(bc>=Min)
+        result+=int(len(np.intersect1d(Index1,Index2)))
     if result>2**15:result%=100000123
     final_result ={"result" : result}
     return jsonify(final_result)
