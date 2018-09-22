@@ -188,6 +188,7 @@ def sortFlights():
 @app.route('/customers-and-hotel/minimum-distance', methods=['POST'])
 def mindis():
     Data = request.get_json();
+    print(Data)
     min_distance = MinDiff(Data)
     answer = {"answer" : min_distance}
     return jsonify(answer)
