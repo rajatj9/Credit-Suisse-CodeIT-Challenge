@@ -1,5 +1,11 @@
 import logging
 from codeitsuisse import  app
+import itertools
+
+
+from flask import request, jsonify;
+
+
 logger = logging.getLogger(__name__)
 
 def get_primes(n):
@@ -38,10 +44,23 @@ def say_hello():
 	return "HELLO, how are you?";
 
 @app.route('/prime-sum', methods=['POST'])
-def prime_sum:
+def prime_sum():
     data = request.get_json();
     logging.info("data sent for evaluation {}".format(data))
-    inputValue = data.get("input");
+    N = data.get("input");
+    prime_list = get_primes(N)
+    answer=[]
+    #Loop to all the possible number of prime numbers
+
+    for L in range(0, len(prime_list)+1):
+        for subset in itertools.combinations(prime_list, L):
+            if (sum(subset)==N):
+                answer = subset
+    return answer
+                
+        
+        
+    
     
     
     
