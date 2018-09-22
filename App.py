@@ -153,9 +153,10 @@ def deepLearning2():
         y_pred = y_pred.tolist()
         result = y_pred.index(1.0)
         answer.append(result)
-        print(y_pred)
+        print("IMAGE 1 : ", answer)
     answer=str(answer)
     result = {"answer" : answer}
+    print ("FINAL ANSWER :  ", result)
     return jsonify(result)
 
     
