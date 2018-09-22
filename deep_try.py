@@ -13,7 +13,7 @@ from keras.models import load_model
 model = load_model('models/mnistCNN.h5')
 import numpy
 #Imports for Deep Learning trade here
-model = load_model('models/mnistCNN.h5')
+#model = load_model('models/mnistCNN.h5')
 from flask import request, jsonify;
 
 
@@ -150,4 +150,23 @@ def deepLearning2():
     result = {"answer" : answer}
     return jsonify(result)
 
+@app.route('/airtrafficcontroller', methods=['POST'])
+def sortFlights():
+    json_file = request.get_json();
+    print(json_file)
+    flights = json_file['Flights']
+    times=[]
+    for flight in flights:
+        times.append(flight['Time'])
+    times.sort()
+    answer_flights=[]
+    for time in times:
+        for flight in flights:
+            added=0
+            if flight['Time']==time and added==0:
+                print(time)
+                answer_flights.append(flight)
+                added=1
+    print(answer_flights)
+    return jsonify(answer_flights)
     

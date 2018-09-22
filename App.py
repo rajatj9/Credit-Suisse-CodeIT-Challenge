@@ -230,4 +230,23 @@ def getOut():
     Trans={'transactions':trans}
     return jsonify(Trans)
 
+@app.route('/airtrafficcontroller', methods=['POST'])
+def sortFlights():
+    json_file = request.get_json();
+    print(json_file)
+    flights = json_file['Flights']
+    times=[]
+    for flight in flights:
+        times.append(flight['Time'])
+    times.sort()
+    answer_flights=[]
+    for time in times:
+        for flight in flights:
+            added=0
+            if flight['Time']==time and added==0:
+                print(time)
+                answer_flights.append(flight)
+                added=1
+    print(answer_flights)
+    return jsonify(answer_flights)
     
