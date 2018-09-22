@@ -129,6 +129,7 @@ def deepLearning():
     for i in range(len(coeffecients)):
         answer += coeffecients[i]*question[i]
     answer = np.sum(answer)
+    answer = int(answer)
     print("ANSWER == ", answer)
     ans_dict= {"answer" : answer}
     print("ANSER DICTIONARY  = ", ans_dict)
