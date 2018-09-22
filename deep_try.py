@@ -35,6 +35,32 @@ def MinDiff(arr):
     # Return min diff
     return diff
 
+def TimeAdd(time, to_add):
+    hours=time[:2]
+    mins=time[2:4]
+
+    if (int(mins)+to_add) <60:
+        mins=int(mins)+to_add
+        if mins<10:
+            mins='0'+str(mins)
+        else:
+            mins=str(mins)
+    else:
+        mins= (int(mins)+to_add)%60
+        if mins<10:
+            mins = '0'+str(mins)
+        else:
+            mins=str(mins)
+        
+        #No Carry Over
+        if (int(hours))<9:
+            hours = int(hours)+1
+            hours='0'+str(hours)
+        else:
+            hours = int(hours)+1
+            hours=str(hours)
+    return hours+mins
+
 
 
 @app.route('/', methods=['GET'])
@@ -218,28 +244,45 @@ def getOut():
             trans.append(step)
     Trans={'transactions':trans}
     return jsonify(Trans)
-
 @app.route('/airtrafficcontroller', methods=['POST'])
 def sortFlights():
     json_file = request.get_json();
-    print(json_file)
+    print('---- INPUT DATA ----',json_file)
     flights = json_file['Flights']
     times=[]
     for flight in flights:
-        times.append(flight['Time'])
+            times.append(flight['Time'])
     times.sort()
     answer_flights=[]
     for time in times:
-        for flight in flights:
-            added=0
-            if flight['Time']==time and added==0:
-                print(time)
-                answer_flights.append(flight)
-                added=1
+            for flight in flights:
+                added=0
+                if flight['Time']==time and added==0:
+                    print(time)
+                    answer_flights.append(flight)
+                    added=1
+                    
+    flights=answer_flights
+    time_gap_dict = json_file["Static"]
+    time_gap = int(time_gap_dict['ReserveTime'])
+    time_gap = time_gap // 100
 
-    answer = {"Flights" : answer_flights }
-    print(answer)
-    return jsonify(answer_flights)
+    for i in range(1,len(flights)):
+        flight=flights[i]
+        prev_flight = flights[i-1]
+        prev_time = prev_flight['Time']
+        
+        
+        temp_time=TimeAdd(prev_time,time_gap)
+        
+        new_time= TimeAdd(temp_time,(5-(int(temp_time) % 5)))
+        flight['Time'] = str(new_time)
+        
+    
+    print("----- MY ANSWER---- :",flights)
+    
+    answer = {"Flights": flights}
+    return jsonify(answer)
 
 @app.route('/customers-and-hotel/minimum-distance', methods=['POST'])
 def mind():
@@ -250,24 +293,42 @@ def mind():
     return jsonify(answer)
 
 
+
 @app.route('/two-dinosaurs', methods=['POST'])
 def CalResult():
     data = request.get_json();
+    print(data)
     Q=data["maximum_difference_for_calories"]
     A=data["calories_for_each_type_for_raphael"]
     result=0
     N=data["number_of_types_of_food"]
     B=data["calories_for_each_type_for_leonardo"]
-    NumOutCome=2**(N*2)
-    food=np.array(A+B)
+    NumOutCome=2**(N)
+    foodA=np.array(A)
+    foodB=np.array(B)
+    AAA=[]
+    BBB=[]
     for k in range(NumOutCome):
-           kk=bin(k)[2:]
-           if len(kk)<(N*2):kk='0'*(N*2-len(kk))+kk
-           a=np.array((list(kk)),dtype=int)
-           temp=copy.copy(food)
-           temp[np.argwhere(a==0)]=0
-           if abs(sum(temp[0:N])-sum(temp[N:]))<=Q:result+=1
+        kk=bin(k)[2:]
+        if len(kk)<(N):kk='0'*(N-len(kk))+kk
+        a=np.array((list(kk)),dtype=int)
+        Index=np.argwhere(a==0)
+        tempA=copy.copy(foodA)
+        tempA[Index]=0
+        AAA.append(sum(tempA))
+        tempB=copy.copy(foodB)
+        tempB[Index]=0
+        BBB.append(sum(tempB))
+    AAA.sort()
+    BBB.sort()
+    ac=np.array(AAA)
+    bc=np.array(BBB)
+    for i in range(len(ac)):
+        Max=ac[i]+Q
+        Min=ac[i]-Q
+        Index1=np.argwhere(bc<=Max)
+        Index2=np.argwhere(bc>=Min)
+        result+=int(len(np.intersect1d(Index1,Index2)))
     if result>2**15:result%=100000123
-    
     final_result ={"result" : result}
     return jsonify(final_result)
