@@ -248,5 +248,6 @@ def sortFlights():
                 answer_flights.append(flight)
                 added=1
     print(answer_flights)
+    answer = {"Flights" : answer_flights }
     return jsonify(answer_flights)
     
