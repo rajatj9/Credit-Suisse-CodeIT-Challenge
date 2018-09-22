@@ -69,7 +69,7 @@ def prime_sum():
     return str(list(answer))
 
 @app.route('/imagesGPS', methods=['POST'])        
-def getGPS(url):
+def getGPS():
     answer=[]
     data = request.get_json()
     data=json.loads(data)
