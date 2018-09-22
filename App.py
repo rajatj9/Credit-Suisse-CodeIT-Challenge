@@ -111,7 +111,7 @@ def getGPS():
     return jsonify(answer)
 
 @app.route('/machine-learning/question-1', methods=['POST'])
-def prime_sum():
+def deepLearning():
     data = request.get_json();
     X=np.array(data['input'])
     Y=np.array(data['input'])
