@@ -72,7 +72,7 @@ def prime_sum():
 def getGPS():
     answer=[]
     data = request.get_json()
-    data=json.loads(data)
+
     print(data)
     for path_dict in data:
         url=path_dict['path']
@@ -103,4 +103,4 @@ def getGPS():
         long=_convert_to_degress(Long)
         out={'lat':lat,'long':long}
         answer.append(out)
-    return json.dump(answer)
+    return jsonify(answer)
