@@ -232,8 +232,9 @@ def getOut():
 
 @app.route('/airtrafficcontroller', methods=['POST'])
 def sortFlights():
-    flights = request.get_json();
-    print(flights)
+    json_file = request.get_json();
+    print(json_file)
+    flights = json_file['Flights']
     times=[]
     for flight in flights:
         times.append(flight['Time'])
