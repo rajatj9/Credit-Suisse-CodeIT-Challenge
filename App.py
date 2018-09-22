@@ -133,7 +133,7 @@ def deepLearning():
     print("ANSWER == ", answer)
     ans_dict= {"answer" : answer}
     print("ANSER DICTIONARY  = ", ans_dict)
-    return json.dumps(ans_dict)
+    return jsonify(ans_dict)
         
         
 @app.route('/tally-expense', methods=['POST'])
