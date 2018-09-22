@@ -163,83 +163,71 @@ def deepLearning2():
 def getOut():
     Data = request.get_json();
     print(Data)
-    n=len(Data['persons'])
-    Person=Data['persons']
-    Expense=Data['expenses']
-    DictName={}
+    Person=Data["persons"]
+    n=len(Person)
+    Expense=Data["expenses"]
+    billN=len(Expense)
+    namePay={}
+    for i in range(n):
+        namePay[Person[i]]=0
+        DictName={}
     for p in range(n):
         DictName[p]=Data['persons'][p]
-    def getTotal(Data):
-        total=0
-        nameDict={}
-        for z in range(n):
-            nameDict[Person[z]]=0
-        for i in range(n):
-            now=Expense[i]
-            nameDict[now['paidBy']]-=now['amount']
-            if 'exclude' in now.keys():
-                PersonName=[]
-                for p in range(n):
-                    if now['exclude'].count(Person[p])==0:
-                        PersonName.append(Person[p])
-                for d in range(len(PersonName)):
-                    nameDict[PersonName[d]]+=(now['amount']/(n-len(PersonName)))
-            else:total+=now['amount']    
-        for k in range(n):
-            nameDict[Person[k]]+=(total/n)
-        return nameDict
-    nameDictTotal=getTotal(Data)
-    total=[]
+    ##
+    def getShouldPay(exclude):
+        L=[]
+        for x in Person:
+            if x not in exclude:L.append(x)
+        return L
+    ##
+    for i in range(billN):
+        AllShare=0
+        now=Expense[i]
+        namePay[now['paidBy']]-=now['amount']
+        if 'exclude' in now.keys():
+            ShouldPay=getShouldPay(now["exclude"])
+            Share=now['amount']/len(ShouldPay)
+            for k in range(len(ShouldPay)):
+                namePay[ShouldPay[k]]+=Share
+        if 'exclude' not in now.keys():
+            AllShare+=now['amount']
+    allShare=AllShare/n
+    for j in range(n):
+        namePay[Person[j]]+=allShare
+        listPay=[]
     for d in range(n):
-        total.append(nameDictTotal[DictName[d]])
-    Trans=[]
-    #temp=copy.copy(total)
-    while total!=[0]*n:
+        listPay.append(namePay[Person[d]])
+    ##
+    total=listPay
+    trans=[]
+    while max(total)>0.05:
         temp=copy.copy(total)
         step={'from':0,'to':0,'amount':0}
-        tempMin=temp[total.index(min(total))]
-        tMin=tempMin
-        tempMax=temp[total.index(max(total))]
-        tMax=tempMax
+        minIndex=total.index(min(total))
+        maxIndex=total.index(max(total))
+        tempMin=temp[minIndex]
+        tempMax=temp[maxIndex]
         if(tempMax+tempMin)>0:
             tMax=tempMax+tempMin
             tMin=0
-            minIndex=total.index(min(total))
-            maxIndex=total.index(max(total))
             temp[minIndex]=tMin
             temp[maxIndex]=tMax
             step['from']=DictName[maxIndex]
             step['to']=DictName[minIndex]
             step['amount']=round(min(tempMax,abs(tempMin)),2)
-            Trans.append(step)
             total=temp
-        elif (tempMax+tempMin)<0:
-            tMin=tempMin+tempMax
+            trans.append(step)
+        if(tempMax+tempMin)<0:
             tMax=0
-            minIndex=total.index(min(total))
-            maxIndex=total.index(max(total))
+            tMin=tempMax+tempMin
             temp[minIndex]=tMin
             temp[maxIndex]=tMax
             step['from']=DictName[maxIndex]
             step['to']=DictName[minIndex]
-            step['amount']=round(min(tempMax,abs(tempMin)),2)
-            Trans.append(step)
+            step['amount']=min(tempMax,abs(tempMin))
             total=temp
-        elif (tempMax+tempMin)==0 and tempMax==0 and tempMin==0:
-            break;
-        elif (tempMax+tempMin)==0 and tempMax!=0:
-            tMax=0
-            tMin=0
-            minIndex=total.index(min(total))
-            maxIndex=total.index(max(total))
-            temp[minIndex]=tMin
-            temp[maxIndex]=tMax
-            step['from']=DictName[maxIndex]
-            step['to']=DictName[minIndex]
-            step['amount']=round(min(tempMax,abs(tempMin)),2)
-            Trans.append(step)
-            total=temp
-    Out={'transactions':Trans}
-    return json.dumps(Out)
+            trans.append(step)
+    Trans={'transactions':trans}
+    return jsonify(Trans)
 
     
