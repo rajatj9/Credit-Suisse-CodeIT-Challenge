@@ -125,11 +125,12 @@ def deepLearning():
     question=data['question']
     answer=0
     for i in range(len(coeffecients)):
-        answer += coeffecients[i]*question[i]}
-    
+        answer += coeffecients[i]*question[i]
     answer = np.sum(answer)
     ans_dict= {"answer" : answer}
     return json.dumps(ans_dict)
         
+@app.route('/machine-learning/question-2', methods=['POST'])
+def deepLearning2():
         
     
