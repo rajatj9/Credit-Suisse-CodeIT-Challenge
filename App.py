@@ -116,7 +116,7 @@ def deepLearning():
     data = request.get_json();
     print(data)
     X=np.array(data['input'])
-    Y=np.array(data['input'])
+    Y=np.array(data['output'])
     # Create linear regression object
     regr = linear_model.LinearRegression()
     
@@ -129,7 +129,6 @@ def deepLearning():
     for i in range(len(coeffecients)):
         answer += coeffecients[i]*question[i]
     answer = np.sum(answer)
-    answer = int(answer)
     print("ANSWER == ", answer)
     ans_dict= {"answer" : answer}
     print("ANSER DICTIONARY  = ", ans_dict)
