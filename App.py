@@ -48,6 +48,7 @@ def prime_sum():
     data = request.get_json();
     logging.info("data sent for evaluation {}".format(data))
     N = data.get("input");
+    N=int(N)
     prime_list = get_primes(N)
     answer=[]
     #Loop to all the possible number of prime numbers
