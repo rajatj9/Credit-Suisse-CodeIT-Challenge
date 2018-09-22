@@ -68,7 +68,7 @@ def prime_sum():
                 answer = subset
     return str(list(answer))
 
-@app.route('/imageGPS', methods=['POST'])        
+@app.route('/imagesGPS', methods=['POST'])        
 def getGPS(url):
     answer=[]
     data = request.get_json()
