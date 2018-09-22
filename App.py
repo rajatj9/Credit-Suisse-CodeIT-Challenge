@@ -271,6 +271,7 @@ def mind():
 @app.route('/two-dinosaurs', methods=['POST'])
 def CalResult():
     data = request.get_json();
+    print(data)
     Q=data["maximum_difference_for_calories"]
     A=data["calories_for_each_type_for_raphael"]
     result=0
