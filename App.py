@@ -305,12 +305,7 @@ def sortFlights():
         print("----- MY ANSWER---- :",answer)
         
 
-        
-        answer = {"Flights": flights}
-        print("----- MY ANSWER---- :",answer)
-        
-
-        return answer
+        return jsonify(answer)
     else:
         #FOR TASK 2
         if len(Static['Runways']) == 2:
@@ -356,7 +351,7 @@ def sortFlights():
                 flight=flights[i]
                 prev_flight = flights[i-1]
                 prev_time = prev_flight['Time']
-                if flight['Distressed'] == True:
+                if 'Distressed' in flight:
                     temp_time=TimeAdd(flight['Time'],time_gap)
                 #new_time= TimeAdd(temp_time,(5-(int(temp_time) % 5)))
                 else:
