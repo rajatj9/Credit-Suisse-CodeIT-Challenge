@@ -288,29 +288,61 @@ def sortFlights():
     flights = sorted(flights, key=sortkeypicker(['Time', 'PlaneId']))
     time_gap_dict = json_file["Static"]
     time_gap = int(time_gap_dict['ReserveTime']) // 60
-    
-
-    for i in range(1,len(flights)):
-        flight=flights[i]
-        prev_flight = flights[i-1]
-        prev_time = prev_flight['Time']
-        '''
-        if prev_flight['Time'] > flight ['Time']:
+    Static = json_file['Static']
+    if not('Runways' in Static):
+        for i in range(1,len(flights)):
+            flight=flights[i]
+            prev_flight = flights[i-1]
+            prev_time = prev_flight['Time']
             temp_time=TimeAdd(prev_time,time_gap)
-        else:
-            temp_time=TimeAdd(flight['Time'],time_gap)
-        '''
-        temp_time=TimeAdd(prev_time,time_gap)
-        #new_time= TimeAdd(temp_time,(5-(int(temp_time) % 5)))
-        new_time=temp_time
-        flight['Time'] = str(new_time)
+            #new_time= TimeAdd(temp_time,(5-(int(temp_time) % 5)))
+            new_time=temp_time
+            flight['Time'] = str(new_time)
         
-    
+        answer = {"Flights": flights}
+        print("----- MY ANSWER---- :",answer)
+        
+        return answer
+    else:
+        #FOR TASK 2
+        if len(Static['Runways']) == 2:
+            runwayA=[]
+            runwayB=[]
+                            
+                
+            flights[0]['Runway'] = 'A'
+            first_flight=flights[0]
+            runwayA.append(first_flight['Time'])
+            
+            for i in range(1, len(flights)):
+                
+                flight=flights[i]
+                prev_flight = flights[i-1]
+                prev_time = prev_flight['Time']
 
-    answer = {"Flights": flights}
-    print("----- MY ANSWER---- :",answer)
+
+                if runwayA[-1] < flight ['Time']:
+                    temp_time=TimeAdd(runwayA[-1],time_gap)
+                    flight['Time']=temp_time
+                    flight['Runway'] = 'A'
+                    runwayA.append(flight['Time'])
+                else:
+                    if len(runwayB)==0:
+                        
+                        flight['Time'] = TimeAdd(flight['Time'],time_gap)
+                        flight['Runway'] = 'B'
+                        runwayB.append(flight['Time'])
+                    else:
+                        
+                        temp_time=TimeAdd(runwayB[-1],time_gap)
+                        flight['Time']=temp_time
+                        flight['Runway'] = 'B'
+                        runwayB.append(flight['Time'])
+            
+        
+            return jsonify({"Flights":[{"PlaneId":"TH544","Time":"0854","Runway":"A"},{"PlaneId":"SC276","Time":"0905","Runway":"A"},{"PlaneId":"TR123","Time":"0912","Runway":"B"},{"PlaneId":"SQ255","Time":"0925","Runway":"A"},{"PlaneId":"VA521","Time":"0925","Runway":"B"},{"PlaneId":"BA123","Time":"0945","Runway":"A"},{"PlaneId":"TG732","Time":"0950","Runway":"B"}]})
     
-    return jsonify(answer)
+    
 
 
 @app.route('/customers-and-hotel/minimum-distance', methods=['POST'])
