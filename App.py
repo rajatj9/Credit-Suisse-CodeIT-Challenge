@@ -351,7 +351,7 @@ def sortFlights():
             return jsonify({"Flights":[{"PlaneId":"TH544","Time":"0854","Runway":"A"},{"PlaneId":"SC276","Time":"0905","Runway":"A"},{"PlaneId":"TR123","Time":"0912","Runway":"B"},{"PlaneId":"SQ255","Time":"0925","Runway":"A"},{"PlaneId":"VA521","Time":"0925","Runway":"B"},{"PlaneId":"BA123","Time":"0945","Runway":"A"},{"PlaneId":"TG732","Time":"0950","Runway":"B"}]})
 
         
-        elif if len(Static['Runways']) == 1:
+        elif len(Static['Runways']) == 1:
             for i in range(1,len(flights)):
                 flight=flights[i]
                 prev_flight = flights[i-1]
