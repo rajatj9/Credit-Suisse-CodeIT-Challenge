@@ -343,7 +343,7 @@ def sortFlights():
                         runwayB.append(flight['Time'])
             
         
-            return jsonify({"Flights":[{"PlaneId":"TH544","Time":"0854","Runway":"A"},{"PlaneId":"SC276","Time":"0905","Runway":"A"},{"PlaneId":"TR123","Time":"0912","Runway":"B"},{"PlaneId":"SQ255","Time":"0925","Runway":"A"},{"PlaneId":"VA521","Time":"0925","Runway":"B"},{"PlaneId":"BA123","Time":"0945","Runway":"A"},{"PlaneId":"TG732","Time":"0950","Runway":"B"}]})
+            return jsonify({"flights" : flights})
 
         
         elif len(Static['Runways']) == 1:
@@ -361,7 +361,7 @@ def sortFlights():
             for flight in flights:
                 flight['Runway'] = 'A'
             answer = {"Flights": flights}
-            return jsonify({"Flights":[{"PlaneId":"TH544","Time":"0854","Runway":"A"},{"PlaneId":"SC276","Time":"0914","Runway":"A"},{"PlaneId":"TG732","Time":"0950","Runway":"A"},{"PlaneId":"TR123","Time":"1010","Runway":"A"},{"PlaneId":"SQ255","Time":"1030","Runway":"A"},{"PlaneId":"VA521","Time":"1050","Runway":"A"},{"PlaneId":"BA123","Time":"1110","Runway":"A"}]})
+            return jsonify(flights)
     
 
 
