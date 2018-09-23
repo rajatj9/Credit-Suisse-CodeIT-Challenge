@@ -287,22 +287,31 @@ def sortFlights():
     flights = json_file['Flights']
     flights = sorted(flights, key=sortkeypicker(['Time', 'PlaneId']))
     time_gap_dict = json_file["Static"]
-    time_gap = int(time_gap_dict['ReserveTime'])
-    time_gap = time_gap // 100
+    time_gap = int(time_gap_dict['ReserveTime']) // 60
+    
 
     for i in range(1,len(flights)):
         flight=flights[i]
         prev_flight = flights[i-1]
         prev_time = prev_flight['Time']
+        '''
+        if prev_flight['Time'] > flight ['Time']:
+            temp_time=TimeAdd(prev_time,time_gap)
+        else:
+            temp_time=TimeAdd(flight['Time'],time_gap)
+        '''
         temp_time=TimeAdd(prev_time,time_gap)
-        new_time= TimeAdd(temp_time,(5-(int(temp_time) % 5)))
+        #new_time= TimeAdd(temp_time,(5-(int(temp_time) % 5)))
+        new_time=temp_time
         flight['Time'] = str(new_time)
         
     
-    print("----- MY ANSWER---- :",flights)
-    
+
     answer = {"Flights": flights}
+    print("----- MY ANSWER---- :",answer)
+    
     return jsonify(answer)
+
 
 @app.route('/customers-and-hotel/minimum-distance', methods=['POST'])
 def mind():

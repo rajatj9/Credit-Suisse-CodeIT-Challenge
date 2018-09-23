@@ -20,6 +20,22 @@ from flask import request, jsonify;
 
 logger = logging.getLogger(__name__)
 
+
+def sortkeypicker(keynames):
+    negate = set()
+    for i, k in enumerate(keynames):
+        if k[:1] == '-':
+            keynames[i] = k[1:]
+            negate.add(k[1:])
+    def getit(adict):
+       composite = [adict[k] for k in keynames]
+       for i, (k, v) in enumerate(zip(keynames, composite)):
+           if k in negate:
+               composite[i] = -v
+       return composite
+    return getit
+
+
 def MinDiff(arr):
     n=len(arr)
     # Initialize difference as infinite
@@ -244,45 +260,39 @@ def getOut():
             trans.append(step)
     Trans={'transactions':trans}
     return jsonify(Trans)
+
 @app.route('/airtrafficcontroller', methods=['POST'])
 def sortFlights():
     json_file = request.get_json();
     print('---- INPUT DATA ----',json_file)
     flights = json_file['Flights']
-    times=[]
-    for flight in flights:
-            times.append(flight['Time'])
-    times.sort()
-    answer_flights=[]
-    for time in times:
-            for flight in flights:
-                added=0
-                if flight['Time']==time and added==0:
-                    print(time)
-                    answer_flights.append(flight)
-                    added=1
-                    
-    flights=answer_flights
+    flights = sorted(flights, key=sortkeypicker(['Time', 'PlaneId']))
     time_gap_dict = json_file["Static"]
-    time_gap = int(time_gap_dict['ReserveTime'])
-    time_gap = time_gap // 100
+    time_gap = int(time_gap_dict['ReserveTime']) // 60
+    
 
     for i in range(1,len(flights)):
         flight=flights[i]
         prev_flight = flights[i-1]
         prev_time = prev_flight['Time']
-        
-        
+        '''
+        if prev_flight['Time'] > flight ['Time']:
+            temp_time=TimeAdd(prev_time,time_gap)
+        else:
+            temp_time=TimeAdd(flight['Time'],time_gap)
+        '''
         temp_time=TimeAdd(prev_time,time_gap)
-        
-        new_time= TimeAdd(temp_time,(5-(int(temp_time) % 5)))
+        #new_time= TimeAdd(temp_time,(5-(int(temp_time) % 5)))
+        new_time=temp_time
         flight['Time'] = str(new_time)
         
     
-    print("----- MY ANSWER---- :",flights)
-    
+
     answer = {"Flights": flights}
+    print("----- MY ANSWER---- :",answer)
+    
     return jsonify(answer)
+
 
 @app.route('/customers-and-hotel/minimum-distance', methods=['POST'])
 def mind():
@@ -332,3 +342,5 @@ def CalResult():
     if result>2**15:result%=100000123
     final_result ={"result" : result}
     return jsonify(final_result)
+
+
