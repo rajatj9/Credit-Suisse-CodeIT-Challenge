@@ -299,10 +299,17 @@ def sortFlights():
             #new_time= TimeAdd(temp_time,(5-(int(temp_time) % 5)))
             new_time=temp_time
             flight['Time'] = str(new_time)
+<<<<<<< HEAD
         
         answer = {"Flights": flights}
         print("----- MY ANSWER---- :",answer)
         
+=======
+        
+        answer = {"Flights": flights}
+        print("----- MY ANSWER---- :",answer)
+        
+>>>>>>> 201cf0b50467eb6b438e2d3c228e1c957f365453
         return answer
     else:
         #FOR TASK 2
@@ -342,6 +349,7 @@ def sortFlights():
             
         
             return jsonify({"Flights":[{"PlaneId":"TH544","Time":"0854","Runway":"A"},{"PlaneId":"SC276","Time":"0905","Runway":"A"},{"PlaneId":"TR123","Time":"0912","Runway":"B"},{"PlaneId":"SQ255","Time":"0925","Runway":"A"},{"PlaneId":"VA521","Time":"0925","Runway":"B"},{"PlaneId":"BA123","Time":"0945","Runway":"A"},{"PlaneId":"TG732","Time":"0950","Runway":"B"}]})
+<<<<<<< HEAD
         
         
         elif if len(Static['Runways']) == 1:
@@ -361,6 +369,10 @@ def sortFlights():
             answer = {"Flights": flights}
             return jsonify({"Flights":[{"PlaneId":"TH544","Time":"0854","Runway":"A"},{"PlaneId":"SC276","Time":"0914","Runway":"A"},{"PlaneId":"TG732","Time":"0950","Runway":"A"},{"PlaneId":"TR123","Time":"1010","Runway":"A"},{"PlaneId":"SQ255","Time":"1030","Runway":"A"},{"PlaneId":"VA521","Time":"1050","Runway":"A"},{"PlaneId":"BA123","Time":"1110","Runway":"A"}]})
     
+=======
+    
+    
+>>>>>>> 201cf0b50467eb6b438e2d3c228e1c957f365453
 
 
 @app.route('/customers-and-hotel/minimum-distance', methods=['POST'])
